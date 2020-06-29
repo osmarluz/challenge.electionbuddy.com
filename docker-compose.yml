@@ -1,0 +1,35 @@
+version: '3.6'
+
+services:
+  app:
+    environment:
+      DATABASE_URL: postgres://postgres@db
+    depends_on:
+      - db
+      - chrome
+    build: .
+    command: bash start.sh
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/app
+      - gems:/gems
+
+  db:
+    image: postgres:9.6
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
+    volumes:
+      - db:/var/lib/postgresql/data]
+
+  chrome:
+    image: selenium/standalone-chrome-debug
+
+  gems:
+    image: busybox
+    volumes:
+      - gems:/gems
+
+volumes:
+  db:
+  gems:

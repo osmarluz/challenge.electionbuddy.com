@@ -12,3 +12,8 @@ end
 class ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 end
+
+Capybara.configure do |config|
+  config.server = :puma, { Silent: true }
+  config.server_host = '0.0.0.0'
+end
