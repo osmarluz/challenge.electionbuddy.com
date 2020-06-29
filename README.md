@@ -1,17 +1,40 @@
-# ElectionBuddy Technical Test ("Code Challenge")
+# ElectionBuddy's Coding Challenge
 
-Mock-ElectionBuddy voters want to be able to see all changes the election administrator did to the election they are voting. You should create a human-readable election audit page that lists all updates to election settings, as well as any changes to questions, answers and voters for that election.
+![ruby](https://img.shields.io/badge/Ruby-2.6.1-green.svg)
+![rails](https://img.shields.io/badge/Rails-6.0.3.1-green.svg)
 
-**Please do not use a third-party gem for audit functionality.**
+The project was developed using **Docker** and **docker-compose**, so the instructions below are assuming you have both installed on your machine.
+I've also changed the database from SQLite to Postgres, as I have more knowledge handling Docker with Postgres.
+I hope this is ok, it was a lot easier than installing everything separately. =D
 
-Your implementation should include a public audit page for every election in the system, as well as any abstraction you deem necessary. There are different value types that can be updated (dates, strings, serialized hashes) and each of those values should be appropriately formatted. You should also show information about who made the change and when the change was made.
+## Running the tests
 
-No particular effort needs to be made on UI/UX as long as it's functional.
+### 1. Build the containers
 
-You'll note that most of the basic structure (`Election`, `Question`, `Answer`, `Voter`) is in place, with existing tests passing.
+`docker-compose build`
 
-Please fork this repository on Github and push your code up to your own fork on Github when completed. **We value your time &mdash; you do not need to finish; spend 1-1.5 hours tops.**
+### 2. Create the test database and run the migrations on the container
 
-If you have any questions, email Brady at bradyb@electionbuddy.com.
+`docker-compose run --rm app bundle exec rails db:setup RAILS_ENV=test`
 
-Good luck!
+### 3. Run all the tests (except system tests)
+
+`docker-compose run --rm app bundle exec rake test`
+
+### 4. Run all system tests
+
+`docker-compose run --rm app bundle exec rake test:system`
+
+## Running the project
+
+### 1. Build the containers (if this hasn't been done before)
+
+`docker-compose build`
+
+### 2. Create the development database and run the migrations on the container
+
+`docker-compose run --rm app bundle exec rails db:setup RAILS_ENV=development`
+
+### 3. Start the containers
+
+`docker-compose up`
