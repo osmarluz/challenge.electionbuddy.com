@@ -47,4 +47,9 @@ class VotersControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to election_voters_url(election_id: @election)
   end
+
+  test "should get election history" do
+    get election_history_voter_url(@voter)
+    assert_response :success
+  end
 end

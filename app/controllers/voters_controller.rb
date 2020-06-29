@@ -1,12 +1,18 @@
 class VotersController < ApplicationController
-  before_action :authenticate_user!, except: [:ballot, :submit]
-  before_action :set_voter, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!, except: [:ballot, :submit, :election_history]
+  before_action :set_voter, only: [:show, :edit, :update, :destroy, :election_history]
   before_action :set_election, only: [:index, :new, :create]
+
+  rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
+
+  def record_not_found
+    render 'record_not_found'
+  end
 
   # GET /voters
   # GET /voters.json
   def index
-    @voters = Voter.all
+    @voters = @election.voters
   end
 
   # GET /voters/1
@@ -67,6 +73,12 @@ class VotersController < ApplicationController
   def ballot; end
 
   def submit; end
+
+  def election_history
+    @election = @voter.election
+    @user = @election.user
+    @audits = @election.audits
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.

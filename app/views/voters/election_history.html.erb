@@ -1,0 +1,35 @@
+<h1>Election History</h1>
+
+<h3>Election <%= @election.name %> under responsibility of <%= @user.email %> </h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Entity</th>
+      <th>Operation</th>
+      <th>Changes</th>
+      <th>Timestamp</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @audits.each do |audit| %>
+      <tr>
+        <td><%= audit.auditable_type %></td>
+        <td><%= audit.operation.capitalize %></td>
+        <td>
+          <ul>
+            <% audit.formatted_fields&.each do |formatted_field| %>
+              <li><%= formatted_field %></li>
+            <% end %>
+          </ul>
+        </td>
+        <td><%= "#{audit.created_at.to_formatted_s(:long)} UTC" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'Log out', destroy_user_session_path, method: :delete %>

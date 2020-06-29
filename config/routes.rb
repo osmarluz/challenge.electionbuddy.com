@@ -6,6 +6,7 @@ Rails.application.routes.draw do
     resources :voters, shallow: true do
       get :ballot, on: :member
       post :submit, on: :member
+      get :election_history, on: :member
     end
   end
   devise_for :users
